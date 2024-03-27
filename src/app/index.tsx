@@ -36,6 +36,21 @@ export default function Splash() {
     );
   }
 
+  function boxes(column: "rigth" | "left") {
+    const rest = column === "left" ? 0 : 1;
+    return Array.from({ length: 20 })
+      .filter((_, index) => index % 2 === rest)
+      .map((_, index) => {
+        const height = index % 2 === (column === "left" ? 0 : 1) ? 200 : 300;
+        return (
+          <Animated.View
+            key={index}
+            style={[styles.box, { height }]}
+          ></Animated.View>
+        );
+      });
+  }
+
   useEffect(() => {
     logoAnimation();
   }, []);
@@ -46,6 +61,10 @@ export default function Splash() {
         source={require("@/assets/logo.png")}
         style={[styles.logo, logoAnimatedStyles]}
       />
+      <View style={styles.boxes}>
+        <View style={styles.column}>{boxes("left")}</View>
+        <View style={styles.column}>{boxes("rigth")}</View>
+      </View>
     </View>
   );
 }
@@ -60,5 +79,20 @@ const styles = StyleSheet.create({
   logo: {
     width: 99,
     height: 99,
+  },
+  box: {
+    width: "100%",
+    borderRadius: 16,
+    backgroundColor: theme.colors.gray[600],
+  },
+  boxes: {
+    flex: 1,
+    width: "100%",
+    flexDirection: "row",
+    gap: 12,
+  },
+  column: {
+    flex: 1,
+    gap: 12,
   },
 });
